@@ -1,1 +1,0 @@
-from user.repos.user_detail_repo import *
