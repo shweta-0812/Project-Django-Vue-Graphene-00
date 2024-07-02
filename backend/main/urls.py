@@ -16,9 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from . import views
 from graphene_django.views import GraphQLView
 
 urlpatterns = [
+    path('get-csrf-token/', views.get_csrf_token, name='get_csrf_token'),
+    path('auth/google/callback/', views.google_callback, name='google_callback'),
     path("admin/", admin.site.urls),
     path("graphql", GraphQLView.as_view(graphiql=True)),
 ]
