@@ -13,6 +13,18 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv, find_dotenv
+from common_utils import get_env_key
+
+_ = load_dotenv(find_dotenv())  # read local .env file
+
+POSTGRES_DB_NAME = get_env_key('POSTGRES_DB_NAME')
+POSTGRES_DB_USER = get_env_key('POSTGRES_DB_USER')
+POSTGRES_DB_PASSWORD = get_env_key('POSTGRES_DB_PASSWORD')
+POSTGRES_DB_HOST = get_env_key('POSTGRES_DB_HOST')
+POSTGRES_DB_PORT = get_env_key('POSTGRES_DB_PORT')
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,7 +39,7 @@ STATIC_URL = "static/"
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# SECURITY WARNING: keep the secret key used in production secret! - this is for django admin panel
 SECRET_KEY = "<your django key created on project setup using djangoadmin start app command>"
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -46,19 +58,20 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "graphene_django",
-    "user",
     "corsheaders",
+    "user",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
-    # "django.middleware.csrf.CsrfViewMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
+    "main.jwt_authentication_middleware.JWTAuthenticationMiddleware",
 ]
 
 ROOT_URLCONF = "main.urls"
@@ -67,13 +80,14 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.jinja2.Jinja2",
         "DIRS": [
-            os.path.join(BASE_DIR, 'templates'),  # path to templates folder
+                os.path.join(BASE_DIR, 'profile/templates'),  # path to templates folder
         ],
         "APP_DIRS": True,
         "OPTIONS": {
-            "environment": "your-app.jinja2.environment"
+            "environment": "main.settings.jinja2.environment" # path to options file
         }
     },
+
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
@@ -100,11 +114,11 @@ WSGI_APPLICATION = "main.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '<db_name>',
-        'USER': '<db_user created using psql create user command>',
-        'PASSWORD': '<db_user password created along with user, keep it empty if no password>',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': POSTGRES_DB_NAME,
+        'USER': POSTGRES_DB_USER,
+        'PASSWORD': POSTGRES_DB_PASSWORD,
+        'HOST': POSTGRES_DB_HOST,
+        'PORT': POSTGRES_DB_PORT,
     }
 }
 
@@ -154,10 +168,10 @@ STORAGES = {
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 GRAPHENE = {
-    "SCHEMA": "main.schema.schema"
+    "SCHEMA": "main.main_schema.schema"
 }
 
-CORS_ORIGIN_ALLOW_ALL = True
+# TODO: not recommended for production
 
-
-CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
+# CORS_ORIGIN_ALLOW_ALL = True
+# CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
