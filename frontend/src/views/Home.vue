@@ -1,27 +1,26 @@
-<script setup>
-import { ref } from 'vue'
-
-defineProps({
-  msg: String,
-})
-
-const count = ref(0)
-</script>
-
 <template>
-  <h1>{{ msg }}</h1>
-
-  <div class="card">
-    <button type="button" @click="count++">count is {{ count }}</button>
-    <p>
-      Edit
-      <code>views/Home.vue</code> to test HMR
-    </p>
-  </div>
+  <v-container>
+    <p>{{ count }}</p>
+    <p>{{ doubleCount }}</p>
+    <v-btn @click="increment">
+      Increment
+    </v-btn>
+    <v-btn :to="{ name: 'Login' }" link>
+      Go to Login Page
+    </v-btn>
+  </v-container>
 </template>
 
-<style scoped>
-.read-the-docs {
-  color: #888;
+<script>
+import { mapState, mapGetters, mapActions } from 'vuex'
+
+export default {
+  computed: {
+    ...mapState('counter', ['count']),
+    ...mapGetters('counter', ['doubleCount'])
+  },
+  methods: {
+    ...mapActions('counter', ['increment'])
+  }
 }
-</style>
+</script>

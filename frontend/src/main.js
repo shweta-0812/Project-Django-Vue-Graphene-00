@@ -1,6 +1,7 @@
 import { createApp, provide, h } from 'vue'
 import App from './App.vue'
 import router from './router' // Vue Router
+import store from './store' // Vue Store
 import vuetify from './plugins/vuetify' // Vuetify setup
 import { useApollo } from './plugins/apollo'
 
@@ -18,7 +19,8 @@ const app = createApp({
 })
 
 // Use plugins or setup tasks here (e.g., Vue Router, Vuetify)
-app.use(router) // Use the router
+app.use(store)
+app.use(router)
 app.use(vuetify)
 
 // Mount the application to the #app element in public/index.html

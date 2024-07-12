@@ -2,7 +2,7 @@
   <div id="inside-app">
     <header>
       <!-- Your header content -->
-      <h1>Dream Walk</h1>
+      <h1>Vue App</h1>
     </header>
 
     <main>
