@@ -1,2 +1,6 @@
-# Project-Berry
-An information engine, which serves as a functioning brain for an organisation. It isn’t a dictionary or glossary, it isn’t a search engine, it is a brain which has all the answers to a your queries.
+# Project-Django-Vue-Graphene-00
+
+A template to create you fullstack web application using the following:
+1. Backend - Django
+2. Frontend - VueJS
+3. Communication over GraphQL - Graphene
